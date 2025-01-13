@@ -94,6 +94,11 @@ const ItemDetailPage = () => {
 
     // 항목 삭제 함수
     const handleDelete = async () => {
+        if (!itemDetail) {
+            alert("아이템을 찾을 수 없습니다.");
+            return; // itemDetail이 없으면 삭제를 시도하지 않음
+        }
+    
         try {
             const deleteResponse = await fetch(
                 `https://assignment-todolist-api.vercel.app/api/egg/items/${itemDetail.id}`,
@@ -104,14 +109,14 @@ const ItemDetailPage = () => {
                     },
                 }
             );
-
+    
             if (!deleteResponse.ok) {
                 throw new Error("아이템 삭제 실패");
             }
-
+    
             const responseJson: { message: string } = await deleteResponse.json();
             alert(responseJson.message); // 삭제 성공 메시지 출력
-
+    
             // 메인 화면으로 리디렉션
             router.push("/");
         } catch (error) {
@@ -119,6 +124,7 @@ const ItemDetailPage = () => {
             alert("삭제에 실패했습니다.");
         }
     };
+    
 
     // 체크박스 상태 변경 함수
     const handleCheckboxChange = () => {
