@@ -3,9 +3,16 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function HomePage() {
-  const [todos, setTodos] = useState<any[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState("");
   const router = useRouter();
+
+  interface Todo { // 타입 정의
+    id: number;
+    name: string;
+    isCompleted: boolean;
+    }
+  
 
   // API에서 데이터 가져오기
   const fetchTodos = async () => {
@@ -13,7 +20,7 @@ export default function HomePage() {
       const response = await fetch(
         "https://assignment-todolist-api.vercel.app/api/egg/items?page=1&pageSize=10"
       );
-      const data = await response.json();
+      const data: Todo[] = await response.json();
       setTodos(data);
     } catch (error) {
       console.error("Error fetching todos:", error);
@@ -62,7 +69,7 @@ export default function HomePage() {
       );
       if (!response.ok) throw new Error("Failed to update item");
 
-      const updatedTodo = await response.json();
+      const updatedTodo: Todo = await response.json();
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>
           todo.id === id ? { ...todo, isCompleted: updatedTodo.isCompleted } : todo
