@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 
 const ItemDetailPage = () => {
     const params = useParams(); // Next.js의 useParams 훅 사용
-    const [itemDetail, setItemDetail] = useState<any>(null);
+    const [itemDetail, setItemDetail] = useState<ItemDetail | null>(null);
     const [loading, setLoading] = useState(true);
     const [isCompleted, setIsCompleted] = useState(false); // 체크박스 상태 관리
     const [previewUrl, setPreviewUrl] = useState<string | null>(null); // 이미지 경로
@@ -13,6 +13,15 @@ const ItemDetailPage = () => {
     const [isEditing, setIsEditing] = useState(false); // 체크박스 텍스트 수정 여부
     const [editedName, setEditedName] = useState(itemDetail?.name || ""); // 수정할 이름
     const router = useRouter(); // 메인 페이지 이동 시 사용
+
+    // item 타입 정의
+    interface ItemDetail {
+        id: number;
+        name: string;
+        isCompleted: boolean;
+        memo: string;
+        imageUrl?: string;
+    }    
 
     useEffect(() => {
         if (!params.id) return; // params.id가 존재하는 경우에만 실행
