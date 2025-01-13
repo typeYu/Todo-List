@@ -127,10 +127,10 @@ const ItemDetailPage = () => {
     };
 
     // 텍스트 수정 완료 함수
-    const handleSaveEditedText = () => {
-        setIsEditing(false); // 텍스트 수정 모드 종료
-        setItemDetail({ ...itemDetail, name: editedName || itemDetail.name }); // itemDetail에 editedName 반영
-    };
+    // const handleSaveEditedText = () => {
+    //     setIsEditing(false);
+    //     setItemDetail({ ...itemDetail, name: editedName || itemDetail.name }); // itemDetail에 editedName 반영
+    // };
 
     if (loading) {
         return <div className=""></div>;
