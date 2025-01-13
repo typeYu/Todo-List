@@ -11,7 +11,7 @@ const ItemDetailPage = () => {
     const [previewUrl, setPreviewUrl] = useState<string | null>(null); // 이미지 경로
     const [memo, setMemo] = useState<string>(""); // 메모 내용 관리
     const [isEditing, setIsEditing] = useState(false); // 체크박스 텍스트 수정 여부
-    const [editedName, setEditedName] = useState(itemDetail?.name || ""); // 수정할 이름
+    const [editedName, setEditedName] = useState<string | undefined>(itemDetail?.name); // 수정 할 이름
     const router = useRouter(); // 메인 페이지 이동 시 사용
 
     // item 타입 정의
@@ -34,7 +34,7 @@ const ItemDetailPage = () => {
                 if (!response.ok) {
                     throw new Error("Failed to fetch item details");
                 }
-                const data = await response.json();
+                const data: ItemDetail = await response.json(); // ItemDetail 타입을 명시적으로 지정
                 setItemDetail(data);
                 setIsCompleted(data.isCompleted); // 초기 상태 설정
                 setMemo(data.memo || ""); // 기존 메모 불러오기
@@ -58,7 +58,7 @@ const ItemDetailPage = () => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        const fileName = file.name;
+        const fileName: string = file.name;
 
         // 한글 포함 여부 확인 (유니코드 범위로 체크)
         const hasKorean = /[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(fileName);
@@ -109,7 +109,7 @@ const ItemDetailPage = () => {
                 throw new Error("아이템 삭제 실패");
             }
 
-            const responseJson = await deleteResponse.json();
+            const responseJson: { message: string } = await deleteResponse.json();
             alert(responseJson.message); // 삭제 성공 메시지 출력
 
             // 메인 화면으로 리디렉션
